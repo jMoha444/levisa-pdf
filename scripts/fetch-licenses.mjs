@@ -1,0 +1,2 @@
+import {writeFile} from 'node:fs/promises';
+for(const repo of ['Hopding/fontkit','qpdf/qpdf']){const r=await fetch('https://api.github.com/repos/'+repo+'/contents');if(!r.ok)throw Error(r.status);const files=await r.json();for(const f of files.filter(x=>/licen[cs]e|copying/i.test(x.name)&&x.download_url)){const response=await fetch(f.download_url);await writeFile('public/licenses/'+repo.replaceAll('/','-')+'-'+f.name,await response.text());console.log(repo,f.name);}}
